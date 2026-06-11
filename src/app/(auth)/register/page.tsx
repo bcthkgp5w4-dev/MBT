@@ -35,17 +35,24 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       const supabase = createClient()
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
         options: {
           data: { full_name: form.full_name, role: form.role },
-          emailRedirectTo: `${window.location.origin}/api/auth/callback`,
         },
       })
       if (error) throw error
-      toast.success('Account created! Check your email to verify.')
-      router.push('/login')
+      if (data.session) {
+        // Email confirmation disabled — user is already signed in
+        toast.success('Account created! Welcome to MBT.')
+        router.push('/dashboard')
+        router.refresh()
+      } else {
+        // Fallback if email confirmation is still enabled in Supabase
+        toast.success('Account created! You can now sign in.')
+        router.push('/login')
+      }
     } catch (err: any) {
       toast.error(err.message || 'Registration failed')
     } finally {

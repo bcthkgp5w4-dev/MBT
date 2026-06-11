@@ -2,11 +2,18 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // If Supabase env vars are not configured, let all requests through
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return NextResponse.next({ request })
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
@@ -25,12 +32,30 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  // Wrap getUser in try/catch — a bad Supabase URL would otherwise crash the middleware
+  let user = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch {
+    // Auth failed (e.g. invalid credentials) — treat as logged out
+  }
 
-  const { pathname } = request.nextUrl
-
-  const publicPaths = ['/', '/about', '/features', '/pricing', '/login', '/register', '/forgot-password', '/reset-password']
-  const isPublic = publicPaths.some(p => pathname === p || pathname.startsWith('/api/'))
+  const publicPaths = [
+    '/',
+    '/about',
+    '/features',
+    '/pricing',
+    '/login',
+    '/register',
+    '/forgot-password',
+    '/reset-password',
+  ]
+  const isPublic =
+    publicPaths.some(p => pathname === p) ||
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/favicon')
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone()

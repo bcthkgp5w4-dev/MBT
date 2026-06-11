@@ -17,7 +17,9 @@ export async function createClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
             )
-          } catch {}
+          } catch {
+            // Ignore cookie errors in Server Components
+          }
         },
       },
     }
@@ -27,9 +29,12 @@ export async function createClient() {
 export async function createAdminClient() {
   const cookieStore = await cookies()
 
+  // Fall back to anon key if service role key is not set
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    key,
     {
       cookies: {
         getAll() {
@@ -40,7 +45,9 @@ export async function createAdminClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
             )
-          } catch {}
+          } catch {
+            // Ignore
+          }
         },
       },
     }

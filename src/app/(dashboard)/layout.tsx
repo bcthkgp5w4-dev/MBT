@@ -13,6 +13,14 @@ export default async function DashboardLayout({
 
   if (!user) redirect('/login')
 
+  // Ensure profile exists — covers users created before the trigger was in place
+  await supabase.from('profiles').upsert({
+    id: user.id,
+    email: user.email!,
+    full_name: user.user_metadata?.full_name || user.email!.split('@')[0],
+    role: user.user_metadata?.role || 'parent',
+  }, { onConflict: 'id', ignoreDuplicates: true })
+
   const { data: profile } = await supabase
     .from('profiles')
     .select('full_name, email, avatar_url')

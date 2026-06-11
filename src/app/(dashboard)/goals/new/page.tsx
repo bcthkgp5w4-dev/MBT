@@ -11,6 +11,7 @@ import { THERAPY_DOMAINS } from '@/lib/constants'
 export default function NewGoalPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [loadingChildren, setLoadingChildren] = useState(true)
   const [children, setChildren] = useState<any[]>([])
   const [form, setForm] = useState({
     child_id: '',
@@ -28,11 +29,15 @@ export default function NewGoalPage() {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
-      const { data } = await supabase.from('children').select('id, name').eq('profile_id', user.id).eq('is_active', true)
+      const { data } = await supabase
+        .from('children')
+        .select('id, name')
+        .eq('profile_id', user.id)
       if (data) {
         setChildren(data)
         if (data.length === 1) setForm(prev => ({ ...prev, child_id: data[0].id }))
       }
+      setLoadingChildren(false)
     }
     load()
   }, [])
@@ -84,7 +89,9 @@ export default function NewGoalPage() {
           {/* Child */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Child *</label>
-            {children.length === 0 ? (
+            {loadingChildren ? (
+              <div className="flex items-center gap-2 text-sm text-gray-400"><Loader2 className="w-4 h-4 animate-spin" /> Loading...</div>
+            ) : children.length === 0 ? (
               <p className="text-sm text-gray-500">No children found. <Link href="/children/new" className="text-blue-600 underline">Add a child first.</Link></p>
             ) : (
               <select

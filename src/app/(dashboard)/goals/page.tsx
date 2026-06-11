@@ -195,6 +195,15 @@ function GoalCard({ goal, children, onUpdate }: { goal: Goal; children: Child[];
           {goal.timeline_weeks && <span>Timeline: <strong className="text-gray-700">{goal.timeline_weeks}w</strong></span>}
         </div>
       )}
+      {goal.measurement_criteria && (
+        <div className="bg-blue-50 rounded-lg px-3 py-2 mb-3 flex items-start gap-2">
+          <span className="text-base shrink-0">📏</span>
+          <div>
+            <p className="text-xs font-medium text-blue-700 mb-0.5">How to measure</p>
+            <p className="text-xs text-blue-600">{goal.measurement_criteria}</p>
+          </div>
+        </div>
+      )}
 
       <div className="flex items-center gap-3">
         <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">

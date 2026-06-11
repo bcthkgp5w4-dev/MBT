@@ -13,6 +13,7 @@ export default function TherapyPage() {
   const [plans, setPlans] = useState<any[]>([])
   const [todayPlan, setTodayPlan] = useState<any>(null)
   const [activities, setActivities] = useState<any[]>([])
+  const [goals, setGoals] = useState<any[]>([])
 
   const today = new Date().toISOString().split('T')[0]
 
@@ -22,13 +23,15 @@ export default function TherapyPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
 
-      const [{ data: ch }, { data: acts }] = await Promise.all([
-        supabase.from('children').select('id, name').eq('profile_id', user.id).eq('is_active', true),
+      const [{ data: ch }, { data: acts }, { data: g }] = await Promise.all([
+        supabase.from('children').select('id, name').eq('profile_id', user.id),
         supabase.from('therapy_activities').select('*').eq('is_active', true).limit(20),
+        supabase.from('goals').select('id, title, domain').eq('profile_id', user.id).eq('status', 'active'),
       ])
 
       if (ch) { setChildren(ch); if (ch.length > 0) setSelectedChild(ch[0].id) }
       if (acts) setActivities(acts)
+      if (g) setGoals(g)
       setLoading(false)
     }
     load()
@@ -150,12 +153,25 @@ export default function TherapyPage() {
                     <p className={`font-medium text-sm ${act.completed ? 'line-through text-gray-400' : 'text-gray-900'}`}>
                       {act.custom_title || 'Activity'}
                     </p>
-                    {act.duration_minutes && (
-                      <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
-                        <Clock className="w-3 h-3" />
-                        {act.duration_minutes} min
-                      </p>
-                    )}
+                    <div className="flex flex-wrap items-center gap-2 mt-0.5">
+                      {act.duration_minutes && (
+                        <p className="text-xs text-gray-400 flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {act.duration_minutes} min
+                        </p>
+                      )}
+                      {act.goal_id && (() => {
+                        const linkedGoal = goals.find((g: any) => g.id === act.goal_id)
+                        return linkedGoal ? (
+                          <span className="text-xs bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full border border-purple-100">
+                            🎯 {linkedGoal.title.length > 30 ? linkedGoal.title.slice(0, 30) + '…' : linkedGoal.title}
+                          </span>
+                        ) : null
+                      })()}
+                      {act.notes && (
+                        <p className="text-xs text-gray-400 truncate max-w-xs">{act.notes}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}

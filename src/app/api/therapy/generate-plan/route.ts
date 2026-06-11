@@ -40,13 +40,21 @@ export async function POST(req: NextRequest) {
   // Delete existing activities
   await supabase.from('daily_plan_activities').delete().eq('plan_id', plan.id)
 
-  // Insert new activities
+  // Build domain -> goal_id map for linking activities to goals
+  const goalMap: Record<string, string> = {}
+  for (const g of (goals || [])) {
+    if (!goalMap[g.domain]) goalMap[g.domain] = g.id
+  }
+
+  // Insert new activities linked to matching goals
   const activitiesData = (result.activities || []).slice(0, 6).map((act: any, i: number) => ({
     plan_id: plan.id,
     custom_title: act.title,
     duration_minutes: act.duration_minutes || 15,
     completed: false,
     order_index: i,
+    goal_id: goalMap[act.domain] || null,
+    notes: act.objective || null,
   }))
 
   await supabase.from('daily_plan_activities').insert(activitiesData)

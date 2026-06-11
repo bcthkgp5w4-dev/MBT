@@ -55,6 +55,14 @@ export default function NewChildPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Not authenticated')
 
+      // Ensure profile row exists before inserting child (FK constraint)
+      await supabase.from('profiles').upsert({
+        id: user.id,
+        email: user.email!,
+        full_name: user.user_metadata?.full_name || user.email!.split('@')[0],
+        role: user.user_metadata?.role || 'parent',
+      }, { onConflict: 'id', ignoreDuplicates: true })
+
       const { error } = await supabase.from('children').insert({
         ...form,
         profile_id: user.id,

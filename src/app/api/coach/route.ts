@@ -1,6 +1,8 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import OpenAI from 'openai'
+import { streamChat } from '@/lib/ai/openai'
 import { SYSTEM_PROMPT, buildChildContext } from '@/lib/ai/prompts'
 
 export async function POST(req: NextRequest) {
@@ -26,21 +28,18 @@ export async function POST(req: NextRequest) {
     { role: 'user' as const, content: message },
   ]
 
-  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-  const stream = await client.chat.completions.create({
-    model: 'gpt-4o',
-    messages,
-    stream: true,
-    temperature: 0.7,
-    max_tokens: 1500,
-  })
+  const stream = await streamChat(messages)
 
   const encoder = new TextEncoder()
   const readable = new ReadableStream({
     async start(controller) {
       for await (const chunk of stream) {
-        const data = JSON.stringify(chunk)
-        controller.enqueue(encoder.encode(`data: ${data}\n\n`))
+        const content = chunk.choices[0]?.delta?.content
+        if (content) {
+          // Format as OpenAI-compatible SSE so the client parser works
+          const data = JSON.stringify({ choices: [{ delta: { content } }] })
+          controller.enqueue(encoder.encode(`data: ${data}\n\n`))
+        }
       }
       controller.enqueue(encoder.encode('data: [DONE]\n\n'))
       controller.close()

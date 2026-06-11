@@ -1,8 +1,8 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@/lib/supabase/server'
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-05-27.dahlia' as any })
 
 const PRICE_IDS: Record<string, string> = {
   basic: process.env.STRIPE_BASIC_PRICE_ID || '',
@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
   const { tier } = await req.json()
   const priceId = PRICE_IDS[tier]
   if (!priceId) return NextResponse.json({ error: 'Invalid tier' }, { status: 400 })
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
   const { data: profile } = await supabase.from('profiles').select('stripe_customer_id, email, full_name').eq('id', user.id).single()
 

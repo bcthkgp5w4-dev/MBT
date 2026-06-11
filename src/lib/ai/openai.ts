@@ -1,11 +1,14 @@
 import OpenAI from 'openai'
 
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+function getClient() {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  })
+}
 
 export async function generateJSON<T>(prompt: string, systemPrompt?: string): Promise<T> {
-  const response = await openai.chat.completions.create({
+  const client = getClient()
+  const response = await client.chat.completions.create({
     model: 'gpt-4o',
     messages: [
       ...(systemPrompt ? [{ role: 'system' as const, content: systemPrompt }] : []),
@@ -21,7 +24,8 @@ export async function generateJSON<T>(prompt: string, systemPrompt?: string): Pr
 }
 
 export async function generateText(prompt: string, systemPrompt?: string): Promise<string> {
-  const response = await openai.chat.completions.create({
+  const client = getClient()
+  const response = await client.chat.completions.create({
     model: 'gpt-4o',
     messages: [
       ...(systemPrompt ? [{ role: 'system' as const, content: systemPrompt }] : []),
@@ -37,7 +41,8 @@ export async function generateText(prompt: string, systemPrompt?: string): Promi
 export async function streamChat(
   messages: Array<{ role: 'user' | 'assistant' | 'system'; content: string }>
 ) {
-  return openai.chat.completions.create({
+  const client = getClient()
+  return client.chat.completions.create({
     model: 'gpt-4o',
     messages,
     temperature: 0.7,

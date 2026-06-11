@@ -1,10 +1,11 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createAdminClient } from '@/lib/supabase/server'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-05-27.dahlia' as any })
-
 export async function POST(req: NextRequest) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
   const body = await req.text()
   const signature = req.headers.get('stripe-signature')!
 
@@ -12,7 +13,7 @@ export async function POST(req: NextRequest) {
 
   try {
     event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!)
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
@@ -23,7 +24,6 @@ export async function POST(req: NextRequest) {
     case 'customer.subscription.updated': {
       const subscription = event.data.object as Stripe.Subscription
       const customerId = subscription.customer as string
-
       const tier = getTierFromPriceId(subscription.items.data[0]?.price.id)
 
       await supabase
@@ -34,7 +34,6 @@ export async function POST(req: NextRequest) {
           stripe_subscription_id: subscription.id,
         })
         .eq('stripe_customer_id', customerId)
-
       break
     }
 
@@ -46,7 +45,6 @@ export async function POST(req: NextRequest) {
         .from('profiles')
         .update({ subscription_tier: 'free', subscription_status: 'canceled' })
         .eq('stripe_customer_id', customerId)
-
       break
     }
   }

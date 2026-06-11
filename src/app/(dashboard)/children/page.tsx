@@ -47,7 +47,7 @@ export default async function ChildrenPage() {
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 gap-4">
-          {children.map((child) => (
+          {children.map((child: any) => (
             <Link
               key={child.id}
               href={`/children/${child.id}`}

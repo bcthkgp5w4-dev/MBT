@@ -60,7 +60,7 @@ export default async function DashboardPage() {
       {/* Children cards */}
       {children && children.length > 0 && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {children.map((child) => (
+          {children.map((child: any) => (
             <Link
               key={child.id}
               href={`/children/${child.id}`}
@@ -125,7 +125,7 @@ export default async function DashboardPage() {
             </h3>
             {goals && goals.length > 0 ? (
               <div className="space-y-3">
-                {goals.slice(0, 3).map((goal) => (
+                {goals.slice(0, 3).map((goal: any) => (
                   <div key={goal.id} className="flex items-center gap-3">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">{goal.title}</p>

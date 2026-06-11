@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     .order('created_at', { ascending: false })
     .limit(7)
 
-  const recentContents = (recentEntries || []).map(e => ({ ...entry, content: e.content }))
+  const recentContents = (recentEntries || []).map((e: any) => ({ ...entry, content: e.content }))
   const analysis = await generateJSON<{
     observations: string
     patterns: string[]

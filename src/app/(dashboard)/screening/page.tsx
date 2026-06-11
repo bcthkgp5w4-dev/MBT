@@ -89,7 +89,7 @@ export default async function ScreeningPage() {
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
         {SCREENINGS.map((screening) => {
-          const childResults = results?.filter(r => r.screening_type === screening.id) || []
+          const childResults = results?.filter((r: any) => r.screening_type === screening.id) || []
           const lastResult = childResults[0]
 
           return (
@@ -143,7 +143,7 @@ export default async function ScreeningPage() {
         <div className="bg-white rounded-2xl border border-gray-100 p-6">
           <h2 className="font-semibold text-gray-900 mb-4">Screening History</h2>
           <div className="space-y-3">
-            {results.slice(0, 10).map((result) => (
+            {results.slice(0, 10).map((result: any) => (
               <Link
                 key={result.id}
                 href={`/screening/results/${result.id}`}

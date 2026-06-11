@@ -88,7 +88,7 @@ export default async function TrainingPage() {
     .select('course_id, completed, completed_lessons')
     .eq('profile_id', user.id)
 
-  const progressMap = Object.fromEntries((userProgress || []).map(p => [p.course_id, p]))
+  const progressMap = Object.fromEntries((userProgress || []).map((p: any) => [p.course_id, p]))
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -104,7 +104,7 @@ export default async function TrainingPage() {
         {[
           { label: 'Available Courses', value: FEATURED_COURSES.length, icon: BookOpen, color: 'text-blue-600 bg-blue-50' },
           { label: 'With Certificates', value: FEATURED_COURSES.filter(c => c.certificate).length, icon: Award, color: 'text-yellow-600 bg-yellow-50' },
-          { label: 'Completed', value: (userProgress || []).filter(p => p.completed).length, icon: GraduationCap, color: 'text-green-600 bg-green-50' },
+          { label: 'Completed', value: (userProgress || []).filter((p: any) => p.completed).length, icon: GraduationCap, color: 'text-green-600 bg-green-50' },
         ].map((stat) => (
           <div key={stat.label} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center`}>

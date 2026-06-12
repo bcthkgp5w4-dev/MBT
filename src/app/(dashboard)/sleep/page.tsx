@@ -8,7 +8,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 export default function SleepPage() {
   const [entries, setEntries] = useState<any[]>([])
-  const [children, setChildren] = useState<any[]>([])
+  const [_children, setChildren] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [submitting, setSubmitting] = useState(false)

@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { FileText, Download, Loader2, Printer } from 'lucide-react'
+import Link from 'next/link'
+import { Loader2, Printer } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { getChildAge, formatDate } from '@/lib/utils'
 
@@ -66,13 +67,12 @@ export default function PassportPage() {
   if (!selectedChild) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">No children found. <a href="/children/new" className="text-blue-600">Create a child profile</a> first.</p>
+        <p className="text-gray-500">No children found. <Link href="/children/new" className="text-blue-600">Create a child profile</Link> first.</p>
       </div>
     )
   }
 
   const activeGoals = goals.filter(g => g.status === 'active')
-  const achievedGoals = goals.filter(g => g.status === 'achieved')
 
   return (
     <div className="max-w-4xl mx-auto">

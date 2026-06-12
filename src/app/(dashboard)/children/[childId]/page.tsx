@@ -3,7 +3,7 @@ import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import {
   ArrowLeft, Edit, ClipboardCheck, Target, BookOpen, AlertTriangle,
-  TrendingUp, Calendar, CheckCircle, Clock, Zap, Brain, Activity,
+  TrendingUp, Calendar, CheckCircle, Zap, Brain, Activity,
   MessageSquare, Plus, ChevronRight, ShieldAlert,
 } from 'lucide-react'
 import { getChildAge, formatDate } from '@/lib/utils'
@@ -108,7 +108,7 @@ export default async function ChildProfilePage({
     { data: goals },
     { data: journals },
     { data: behaviors },
-    { data: progressData },
+    { data: _progressData },
   ] = await Promise.all([
     supabase.from('children').select('*').eq('id', childId).eq('profile_id', user.id).single(),
     supabase.from('functional_assessments')

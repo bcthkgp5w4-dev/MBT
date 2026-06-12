@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Plus, AlertTriangle, Loader2, TrendingUp, Sparkles } from 'lucide-react'
+import { Plus, AlertTriangle, Loader2, Sparkles } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { formatDate } from '@/lib/utils'
 import type { BehaviorEntry } from '@/types'

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Plus, BookOpen, Loader2, TrendingUp, Sparkles } from 'lucide-react'
+import { Plus, BookOpen, Loader2, Sparkles } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { formatDate, cn } from '@/lib/utils'
 import type { JournalEntry } from '@/types'

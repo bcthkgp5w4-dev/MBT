@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Map, Loader2, CheckCircle, Circle, ArrowRight } from 'lucide-react'
+import { Loader2, CheckCircle, ArrowRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const COMMUNICATION_ROADMAP = [
@@ -22,7 +22,7 @@ const SOCIAL_ROADMAP = [
 export default function RoadmapPage() {
   const [children, setChildren] = useState<any[]>([])
   const [selectedChild, setSelectedChild] = useState<any>(null)
-  const [goals, setGoals] = useState<any[]>([])
+  const [_goals, setGoals] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

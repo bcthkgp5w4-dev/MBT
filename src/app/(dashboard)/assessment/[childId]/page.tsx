@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Loader2, Languages, ChevronRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
-import { DOMAINS, QUESTIONS, RESPONSE_LABELS, RESPONSE_LABELS_UR, type ResponseValue, type DomainId } from '@/lib/assessment/questions'
+import { DOMAINS, QUESTIONS, RESPONSE_LABELS, RESPONSE_LABELS_UR, type ResponseValue } from '@/lib/assessment/questions'
 
 const RESPONSE_COLORS: Record<ResponseValue, string> = {
   always: 'bg-green-500 border-green-500 text-white',

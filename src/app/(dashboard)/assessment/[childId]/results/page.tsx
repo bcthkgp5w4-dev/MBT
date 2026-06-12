@@ -37,18 +37,11 @@ export default async function AssessmentResultsPage({
 
   const domainScores = assessment.domain_scores as Record<string, any>
   const safetyFlags = assessment.safety_flags as string[]
-  const prioritizedDomains = assessment.prioritized_domains as string[]
-
   // Build sorted domain score list
   const domainList = DOMAINS.map(d => ({
     ...d,
     score: domainScores[d.id] || { percentage: 0, level: 'emerging', skillAgeEstimate: 'unknown', priorityRank: 99 },
   })).sort((a, b) => a.score.priorityRank - b.score.priorityRank)
-
-  const strengths = (devProfile?.strengths || assessment.domain_scores ? [] : []) as string[]
-  const challenges = (devProfile?.challenges || []) as string[]
-  const emergingSkills = (devProfile?.emerging_skills || []) as string[]
-  const missingSkills = (devProfile?.missing_skills || []) as string[]
   const priorityAreas = (devProfile?.priority_areas || []) as any[]
   const shortTermGoals = (devProfile?.short_term_goals || []) as any[]
   const mediumTermGoals = (devProfile?.medium_term_goals || []) as any[]

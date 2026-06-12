@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Send, Brain, Loader2, ChevronDown } from 'lucide-react'
+import { Send, Brain, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
-import { formatDate } from '@/lib/utils'
 
 interface Message {
   role: 'user' | 'assistant'

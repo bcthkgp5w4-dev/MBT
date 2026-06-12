@@ -10,7 +10,7 @@ export default function TherapyPage() {
   const [generating, setGenerating] = useState(false)
   const [children, setChildren] = useState<any[]>([])
   const [selectedChild, setSelectedChild] = useState('')
-  const [plans, setPlans] = useState<any[]>([])
+  const [_plans, _setPlans] = useState<any[]>([])
   const [todayPlan, setTodayPlan] = useState<any>(null)
   const [activities, setActivities] = useState<any[]>([])
   const [goals, setGoals] = useState<any[]>([])

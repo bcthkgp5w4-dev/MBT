@@ -79,7 +79,7 @@ export default function MCHATRPage() {
         high: 'آٹزم کا زیادہ خطرہ ہے۔ ترقیاتی ماہر کو فوری طور پر ریفر کرنے کی سخت سفارش کی جاتی ہے۔',
       }
 
-      const { data, error } = await supabase.from('screening_results').insert({
+      const { data: _data, error } = await supabase.from('screening_results').insert({
         child_id: childId,
         profile_id: (await supabase.auth.getUser()).data.user?.id,
         screening_type: 'mchat_r',

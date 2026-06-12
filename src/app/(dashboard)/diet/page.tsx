@@ -10,7 +10,7 @@ const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack']
 export default function DietPage() {
   const [entries, setEntries] = useState<any[]>([])
   const [children, setChildren] = useState<any[]>([])
-  const [selectedChild, setSelectedChild] = useState('')
+  const [_selectedChild, setSelectedChild] = useState('')
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [submitting, setSubmitting] = useState(false)

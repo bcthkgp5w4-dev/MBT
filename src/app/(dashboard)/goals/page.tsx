@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Plus, Target, Loader2, TrendingUp, CheckCircle, PauseCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { THERAPY_DOMAINS } from '@/lib/constants'
-import { cn, formatDate, DOMAIN_COLORS } from '@/lib/utils'
+import { cn, DOMAIN_COLORS } from '@/lib/utils'
 import type { Goal, Child } from '@/types'
 
 export default function GoalsPage() {

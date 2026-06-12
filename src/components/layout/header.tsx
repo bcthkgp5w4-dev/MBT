@@ -1,6 +1,6 @@
 'use client'
 
-import { Bell, Search, ChevronDown } from 'lucide-react'
+import { Bell } from 'lucide-react'
 import { getInitials } from '@/lib/utils'
 
 interface HeaderProps {

@@ -19,7 +19,7 @@ export default async function AssessmentPage() {
   ])
 
   const assessmentsByChild = Object.fromEntries(
-    (children || []).map(c => [c.id, (assessments || []).filter(a => a.child_id === c.id)])
+    (children || []).map((c: any) => [c.id, (assessments || []).filter((a: any) => a.child_id === c.id)])
   )
 
   return (
@@ -59,7 +59,7 @@ export default async function AssessmentPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {(children || []).map(child => {
+          {(children || []).map((child: any) => {
             const childAssessments = assessmentsByChild[child.id] || []
             const latest = childAssessments[0]
             return (

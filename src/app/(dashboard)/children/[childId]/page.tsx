@@ -414,7 +414,7 @@ export default async function ChildProfilePage({
                     <TrendingUp className="w-3.5 h-3.5 text-blue-500" /> Observed Patterns
                   </p>
                   <ul className="space-y-1">
-                    {allAiPatterns.slice(0, 3).map((p, i) => (
+                    {allAiPatterns.slice(0, 3).map((p: string, i: number) => (
                       <li key={i} className="text-xs text-gray-600 flex items-start gap-1.5">
                         <span className="text-blue-400 shrink-0">◆</span>{p}
                       </li>
@@ -618,7 +618,7 @@ export default async function ChildProfilePage({
             <EmptyState icon="📈" message="Progress data will appear here once you have active goals." />
           ) : (
             <div className="space-y-3">
-              {Object.entries(goalsByDomain).slice(0, 5).map(([domain, dGoals]: [string, any[]]) => {
+              {(Object.entries(goalsByDomain) as [string, any[]][]).slice(0, 5).map(([domain, dGoals]) => {
                 const avg = Math.round(dGoals.reduce((s, g) => s + (g.progress_percentage || 0), 0) / dGoals.length)
                 const achieved = dGoals.filter(g => g.status === 'achieved').length
                 return (
@@ -689,7 +689,7 @@ export default async function ChildProfilePage({
                 <div className="bg-yellow-50 rounded-xl p-3">
                   <p className="text-xs font-semibold text-yellow-700 mb-1.5">🏆 Recent Milestones</p>
                   <ul className="space-y-1">
-                    {allMilestones.slice(0, 3).map((m, i) => (
+                    {allMilestones.slice(0, 3).map((m: string, i: number) => (
                       <li key={i} className="text-xs text-gray-700 flex items-start gap-1.5">
                         <span className="text-yellow-500">★</span>{m}
                       </li>
@@ -722,7 +722,7 @@ export default async function ChildProfilePage({
                 <div className="bg-purple-50 rounded-xl p-3">
                   <p className="text-xs font-semibold text-purple-700 mb-1.5">🤖 AI Insights from Journal</p>
                   <ul className="space-y-1">
-                    {allAiPatterns.slice(0, 3).map((p, i) => (
+                    {allAiPatterns.slice(0, 3).map((p: string, i: number) => (
                       <li key={i} className="text-xs text-gray-600 flex items-start gap-1.5">
                         <span className="text-purple-400">◆</span>{p}
                       </li>

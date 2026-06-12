@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/children', icon: Users, label: 'Children' },
   { href: '/screening', icon: ClipboardList, label: 'Screening' },
+  { href: '/assessment', icon: ShieldCheck, label: 'Assessment' },
   { href: '/goals', icon: Target, label: 'Goals' },
   { href: '/therapy', icon: Calendar, label: 'Therapy Plans' },
   { href: '/coach', icon: MessageSquare, label: 'AI Coach' },

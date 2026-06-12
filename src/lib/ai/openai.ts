@@ -140,6 +140,121 @@ Feel free to ask a more specific question and I can provide more targeted guidan
 }
 
 function getMockJSON(prompt: string): Record<string, unknown> {
+  if (prompt.includes('therapy planning report') || prompt.includes('domain_scores') || prompt.includes('priority_areas')) {
+    return {
+      strengths: [
+        'Shows interest in familiar people and responds to their presence',
+        'Can engage with preferred objects and activities for short periods',
+        'Demonstrates some functional understanding of daily routines',
+        'Visual learning appears to be a relative strength',
+      ],
+      challenges: [
+        'Limited verbal communication makes expressing needs difficult',
+        'Difficulty with transitions and unexpected changes to routine',
+        'Peer interaction skills need significant development',
+        'Attention and task completion require structured adult support',
+      ],
+      emerging_skills: [
+        'Beginning to use gestures or vocalizations to communicate wants',
+        'Starting to show interest in other children nearby',
+        'Can follow simple 1-step instructions with consistent prompting',
+        'Shows some functional play with familiar toys',
+      ],
+      missing_skills: [
+        'Two-word combinations or sentences for requesting',
+        'Cooperative play with peers',
+        'Independent task completion without adult support',
+        'Flexible response to unexpected changes',
+      ],
+      priority_areas: [
+        { rank: 1, domain: 'Communication', reason: 'Functional communication is the foundation for all other learning and reduces challenging behavior driven by frustration', current_level: 'Using gestures and vocalizations; limited words' },
+        { rank: 2, domain: 'Behavior & Emotions', reason: 'Emotional regulation and transition tolerance are needed for learning and participation in daily life', current_level: 'Tantrums with routine changes; some rigidity' },
+        { rank: 3, domain: 'Social Skills', reason: 'Building joint attention and basic peer interaction skills enables participation in group learning', current_level: 'Observes others; limited initiation' },
+        { rank: 4, domain: 'Attention & Learning', reason: 'Sitting tolerance and instruction-following are prerequisites for structured therapy and school readiness', current_level: 'Attends briefly to preferred activities; distracted by environment' },
+      ],
+      short_term_goals: [
+        {
+          domain: 'Communication',
+          title: 'Request preferred items using words or gestures',
+          baseline: 'Currently uses crying or reaching to communicate wants',
+          target: 'Independently uses a word, sign, or picture to request in 4/5 opportunities',
+          success_criteria: '80% independent requests across 3 settings over 2 weeks',
+          measurement_method: 'Frequency count of independent vs. prompted requests per session',
+          timeline_weeks: 8,
+          activities: [
+            { name: 'Motivation-Based Requesting', purpose: 'Teach requesting with high-value items', materials: ['Preferred snacks', 'Bubbles', 'Toy cars'], instructions: ['Hold preferred item in view', 'Wait 5 seconds for any communication attempt', 'Immediately reward attempt with item', 'Gradually require clearer word or sign'], duration_minutes: 10, difficulty: 'beginner', data_collection: 'Mark each trial as Independent (I), Verbal Prompt (VP), or Physical Prompt (PP)' },
+            { name: 'PECS Phase 1–2', purpose: 'Build picture exchange communication', materials: ['Photo cards', 'Velcro board', 'Preferred items'], instructions: ['Create cards of 3–5 favourite items', 'Physically assist child to hand card to receive item', 'Fade physical prompt over 5–10 trials', 'Gradually increase distance'], duration_minutes: 10, difficulty: 'beginner', data_collection: 'Record number of exchanges per session' },
+          ],
+        },
+        {
+          domain: 'Behavior & Emotions',
+          title: 'Tolerate 2-minute transitions with visual warning',
+          baseline: 'Meltdowns occur at most activity endings',
+          target: 'Transitions with picture schedule and 2-min warning without meltdown in 3/4 attempts',
+          success_criteria: '75% of transitions completed within 2 minutes without major distress',
+          measurement_method: 'Record each transition as: smooth / minor protest / meltdown',
+          timeline_weeks: 8,
+          activities: [
+            { name: 'Visual Schedule Introduction', purpose: 'Reduce transition anxiety with predictability', materials: ['Picture cards', 'Velcro board', 'Timer'], instructions: ['Create 3–4 picture cards for daily sequence', 'Review schedule together each morning', 'Point to current and next activity', 'Use countdown timer before transitions'], duration_minutes: 5, difficulty: 'beginner', data_collection: 'Rate each transition 1–3 (1=smooth, 2=protest, 3=meltdown)' },
+          ],
+        },
+      ],
+      medium_term_goals: [
+        {
+          domain: 'Communication',
+          title: 'Combine 2 words to make requests and comments',
+          baseline: 'Uses single words or pictures',
+          target: 'Spontaneously uses 2-word phrases in 3/5 daily opportunities',
+          success_criteria: '60% two-word combinations without prompting across 2 weeks',
+          measurement_method: 'Language sample — count two-word vs. single-word utterances',
+          timeline_weeks: 16,
+          activities: [
+            { name: 'Expand and Model', purpose: 'Model next language level just above child\'s current', materials: ['Daily routines', 'Books', 'Toys'], instructions: ['When child says "juice", model "more juice" or "want juice"', 'Do not demand imitation', 'Create natural opportunities 10x per day', 'Praise any two-word attempt immediately'], duration_minutes: 15, difficulty: 'intermediate', data_collection: 'Tally 2-word+ utterances during 10-minute play sample daily' },
+          ],
+        },
+      ],
+      long_term_goals: [
+        {
+          domain: 'Communication',
+          title: 'Use 3–5 word sentences to express needs, ideas, and questions',
+          baseline: 'Emerging 2-word phrases',
+          target: '3–5 word sentences used spontaneously across home, therapy, and community',
+          success_criteria: 'MLU (Mean Length of Utterance) of 3.0+ over a 20-utterance language sample',
+          measurement_method: 'Monthly language sample during free play — calculate MLU',
+          timeline_weeks: 24,
+          activities: [],
+        },
+      ],
+      therapy_recommendations: [
+        { therapy_type: 'Speech-Language Therapy', priority: 'high', frequency: '2–3 sessions per week', reason: 'Functional communication is the most urgent priority; SLP will target requesting, labeling, and social communication using evidence-based methods', home_support: 'Implement requesting routines 20+ times daily using preferred items' },
+        { therapy_type: 'Applied Behavior Analysis (ABA)', priority: 'high', frequency: '15–25 hours per week depending on funding', reason: 'ABA addresses communication, behavior, and skill acquisition systematically through structured and naturalistic teaching', home_support: 'Use reinforcement principles consistently; reward approximations of target skills' },
+        { therapy_type: 'Occupational Therapy', priority: 'medium', frequency: '1 session per week', reason: 'Sensory processing and fine motor skills affect daily participation; OT will create a sensory diet and support self-care skills', home_support: 'Implement 3–4 sensory activities daily as recommended by OT' },
+        { therapy_type: 'Parent Training & Coaching', priority: 'high', frequency: 'Weekly or biweekly sessions', reason: 'Parent-implemented intervention is the most powerful lever for children this age; training improves outcomes across all domains', home_support: 'Practice 2–3 target skills daily for 10–15 minutes each' },
+      ],
+      daily_plan: {
+        '30_min': { sessions: [{ domain: 'Communication', activity: 'Requesting practice with preferred items', duration_min: 10 }, { domain: 'Play Skills', activity: 'Parallel play with favorite toys + narration', duration_min: 10 }, { domain: 'Adaptive Skills', activity: 'One daily living routine (wash hands, put on shoes)', duration_min: 10 }] },
+        '60_min': { sessions: [{ domain: 'Communication', activity: 'Requesting + labeling + 2-word modeling', duration_min: 15 }, { domain: 'Social Skills', activity: 'Turn-taking games (roll a ball, simple board game)', duration_min: 15 }, { domain: 'Play Skills', activity: 'Pretend play with props + commenting', duration_min: 15 }, { domain: 'Attention & Learning', activity: 'Table-top matching, sorting, or puzzles', duration_min: 15 }] },
+        '90_min': { sessions: [{ domain: 'Communication', activity: 'Requesting + labeling + sentence modeling', duration_min: 20 }, { domain: 'Social Skills', activity: 'Turn-taking and emotion recognition activities', duration_min: 15 }, { domain: 'Play Skills', activity: 'Pretend play and cooperative play activities', duration_min: 20 }, { domain: 'Attention & Learning', activity: 'Pre-academic matching, sorting, simple puzzles', duration_min: 20 }, { domain: 'Adaptive Skills', activity: 'Self-care routine practice (dressing, brushing teeth)', duration_min: 15 }] },
+      },
+      weekly_schedule: {
+        monday: ['Morning (20 min): Communication — requesting practice with 3 preferred items', 'Evening (15 min): Visual schedule review + 1 transition practice'],
+        tuesday: ['Morning (20 min): Play skills — parallel play + narration', 'Evening (15 min): Adaptive — dressing/undressing practice'],
+        wednesday: ['Morning (20 min): Social — turn-taking game (ball, bubbles)', 'Evening (15 min): Communication — labeling objects in environment'],
+        thursday: ['Morning (20 min): Attention — table-top activity (puzzle, sorting)', 'Evening (15 min): Emotional regulation — name feelings during daily activities'],
+        friday: ['Morning (20 min): Communication — modeling 2-word phrases during play', 'Evening (15 min): Pretend play with props'],
+        saturday: ['30–45 min: Community outing with communication opportunities', 'Afternoon: Free play with sibling or peer + facilitated interaction'],
+        sunday: ['Rest + informal practice woven into daily routines (meals, bath, getting dressed)'],
+      },
+      parent_coaching_tips: [
+        'Follow your child\'s lead — join their activity before redirecting, as this builds trust and motivation',
+        'Create "communication temptations" — place desired items in view but out of reach to encourage requesting',
+        'Use a 5-second wait after any question or opportunity — silence gives your child time to process and respond',
+        'Expand, don\'t correct — if your child says "juice", you say "more juice" or "I want juice" without asking them to repeat',
+        'Celebrate all attempts — any communication effort (pointing, sound, look) deserves an enthusiastic response and the requested item',
+      ],
+    }
+  }
+
   if (prompt.includes('SMART') || prompt.includes('goal') || prompt.includes('Goal')) {
     return {
       goals: [

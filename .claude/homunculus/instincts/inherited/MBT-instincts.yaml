@@ -1,0 +1,434 @@
+# Instincts generated from https://github.com/bcthkgp5w4-dev/MBT
+# Generated: 2026-06-16T14:49:07.099Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: MBT-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/bcthkgp5w4-dev/MBT
+---
+
+# MBT Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: chore, feat
+
+## Evidence
+
+- 6 commits analyzed
+- Detected conventional commit pattern
+- Examples: feat: add HabitTribe Flutter app - core and feature layer implementation, chore: clean up agent worktrees
+
+---
+id: MBT-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/bcthkgp5w4-dev/MBT
+---
+
+# MBT Commit Length
+
+## Action
+
+Write moderate-length commit messages (~51 characters)
+
+## Evidence
+
+- Average commit message length: 51 chars
+- Based on 6 commits
+
+---
+id: MBT-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/bcthkgp5w4-dev/MBT
+---
+
+# MBT Naming Files
+
+## Action
+
+Use snake_case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: snake_case
+
+---
+id: MBT-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/bcthkgp5w4-dev/MBT
+---
+
+# MBT Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: MBT-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/bcthkgp5w4-dev/MBT
+---
+
+# MBT Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: MBT-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/bcthkgp5w4-dev/MBT
+---
+
+# MBT Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: MBT-workflow-add-feature-module-clean-architecture-flutter
+trigger: "when doing add feature module clean architecture flutter"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/bcthkgp5w4-dev/MBT
+---
+
+# MBT Workflow Add Feature Module Clean Architecture Flutter
+
+## Action
+
+Follow the add-feature-module-clean-architecture-flutter workflow:
+1. Create data layer files: models, datasources, repositories
+2. Create domain layer files: entities, repositories, usecases
+3. Create presentation layer files: providers, screens, widgets
+4. Update shared/core files if necessary (e.g., constants, utils)
+5. Update pubspec.yaml if dependencies are needed
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: lib/features/*/data/models/*.dart, lib/features/*/data/repositories/*_repository_impl.dart, lib/features/*/domain/entities/*.dart
+
+---
+id: MBT-workflow-add-firebase-cloud-functions-for-feature
+trigger: "when doing add firebase cloud functions for feature"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/bcthkgp5w4-dev/MBT
+---
+
+# MBT Workflow Add Firebase Cloud Functions For Feature
+
+## Action
+
+Follow the add-firebase-cloud-functions-for-feature workflow:
+1. Edit or add files in functions/src/ (e.g., index.ts)
+2. Update functions/package.json if new dependencies are needed
+3. Deploy or test the updated functions
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: functions/src/index.ts, functions/package.json
+
+---
+id: MBT-workflow-manage-agent-worktrees
+trigger: "when doing manage agent worktrees"
+confidence: 0.65
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/bcthkgp5w4-dev/MBT
+---
+
+# MBT Workflow Manage Agent Worktrees
+
+## Action
+
+Follow the manage-agent-worktrees workflow:
+1. Add or remove .claude/worktrees/agent-* directories
+2. Update .gitignore to ignore .claude/worktrees/
+3. Commit changes with appropriate chore message
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~3x per month
+- Files: .claude/worktrees/agent-*, .gitignore
+
+---
+id: mbt-instinct-filename-snake-case
+trigger: "When creating or renaming a file in the codebase"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Filename Snake Case
+
+## Action
+
+Name the file using snake_case
+
+## Evidence
+
+- Pattern in namingConventions.files
+- lib/features/*/data/models/*.dart
+
+---
+id: mbt-instinct-function-camel-case
+trigger: "When defining a function"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Function Camel Case
+
+## Action
+
+Name the function using camelCase
+
+## Evidence
+
+- Pattern in namingConventions.functions
+
+---
+id: mbt-instinct-class-pascal-case
+trigger: "When defining a class"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Class Pascal Case
+
+## Action
+
+Name the class using PascalCase
+
+## Evidence
+
+- Pattern in namingConventions.classes
+
+---
+id: mbt-instinct-constant-screaming-snake-case
+trigger: "When defining a constant"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Constant Screaming Snake Case
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE
+
+## Evidence
+
+- Pattern in namingConventions.constants
+
+---
+id: mbt-instinct-import-relative
+trigger: "When importing modules or files"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Import Relative
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in importStyle: relative
+
+---
+id: mbt-instinct-export-named
+trigger: "When exporting modules or functions"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Export Named
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in exportStyle: named
+
+---
+id: mbt-instinct-test-location-separate
+trigger: "When adding or updating tests"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Test Location Separate
+
+## Action
+
+Place test files in a separate directory from source files
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation: separate
+
+---
+id: mbt-instinct-git-commit-conventional
+trigger: "When writing a commit message"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Git Commit Conventional
+
+## Action
+
+Use a conventional commit prefix (e.g., feat, chore) followed by a colon and a short description
+
+## Evidence
+
+- Seen in commit: feat: add HabitTribe Flutter app - core and feature layer implementation
+- Pattern in commits.prefixes
+
+---
+id: mbt-instinct-git-commit-length
+trigger: "When composing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Git Commit Length
+
+## Action
+
+Keep the commit message around 50 characters on average
+
+## Evidence
+
+- Pattern in commits.averageLength: 51
+
+---
+id: mbt-instinct-add-feature-module-flutter
+trigger: "When implementing a new feature or domain in the Flutter app"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Add Feature Module Flutter
+
+## Action
+
+Create data, domain, and presentation layer files for the feature using clean architecture; update shared/core files and pubspec.yaml if needed
+
+## Evidence
+
+- Workflow: add-feature-module-clean-architecture-flutter
+- Files: lib/features/*/data/models/*.dart, etc.
+
+---
+id: mbt-instinct-add-firebase-cloud-function
+trigger: "When implementing or extending backend logic for a new or existing feature"
+confidence: 0.85
+domain: workflow
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Add Firebase Cloud Function
+
+## Action
+
+Edit or add files in functions/src/, update functions/package.json if needed, and deploy/test the updated functions
+
+## Evidence
+
+- Workflow: add-firebase-cloud-functions-for-feature
+- Files: functions/src/index.ts, functions/package.json
+
+---
+id: mbt-instinct-manage-agent-worktree
+trigger: "When cleaning up, adding, or ignoring agent worktree directories created by Claude AI"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: bcthkgp5w4-dev/MBT
+---
+
+# Mbt Instinct Manage Agent Worktree
+
+## Action
+
+Add or remove .claude/worktrees/agent-* directories and update .gitignore to ignore .claude/worktrees/; commit with a chore message
+
+## Evidence
+
+- Workflow: manage-agent-worktrees
+- Files: .claude/worktrees/agent-*, .gitignore
+

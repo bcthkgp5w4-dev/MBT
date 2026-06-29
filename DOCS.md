@@ -1,5 +1,6 @@
 # MBT – Mind, Behavior & Therapy
 ## Complete Platform Documentation
+<!-- Last updated: 2026-06-29 -->
 
 ### Overview
 MBT is a production-ready AI-powered autism support SaaS platform built with Next.js 15, Supabase, and OpenAI.
@@ -201,7 +202,7 @@ MBT is not a substitute for professional diagnosis, treatment, or medical advice
 ## Subscription Tiers
 
 | Tier | Price | Children | AI Coach | Features |
-|------|-------|----------|----------|---------|
+|------|-------|----------|----------|----------|
 | Free | $0 | 1 | 5 msg/mo | Basic |
 | Basic | $19/mo | 2 | 50 msg/mo | + Goals, Progress |
 | Pro | $49/mo | Unlimited | Unlimited | All features |

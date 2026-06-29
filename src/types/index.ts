@@ -141,6 +141,7 @@ export interface JournalEntry {
   ai_analysis?: string
   ai_patterns?: string[]
   ai_recommendations?: string[]
+  media_urls?: string[]
   created_at: string
   updated_at: string
 }

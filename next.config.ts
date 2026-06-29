@@ -7,9 +7,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
     ],
   },
-  experimental: {
-    serverComponentsExternalPackages: ['jspdf'],
-  },
+  serverExternalPackages: ['jspdf'],
 }
 
 export default nextConfig

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Plus, Target, Loader2, TrendingUp, CheckCircle, PauseCircle } from 'lucide-react'
+import { Plus, Target, Loader2, TrendingUp, CheckCircle, PauseCircle, Pencil, Trash2, X, Save } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { THERAPY_DOMAINS } from '@/lib/constants'
 import { cn, DOMAIN_COLORS } from '@/lib/utils'
@@ -52,6 +52,14 @@ export default function GoalsPage() {
     }
   }
 
+  function handleUpdate(updated: Goal) {
+    setGoals(prev => prev.map(g => g.id === updated.id ? updated : g))
+  }
+
+  function handleDelete(id: string) {
+    setGoals(prev => prev.filter(g => g.id !== id))
+  }
+
   const filteredGoals = goals.filter(g => {
     if (selectedChild && g.child_id !== selectedChild) return false
     if (selectedDomain && g.domain !== selectedDomain) return false
@@ -60,6 +68,7 @@ export default function GoalsPage() {
 
   const activeGoals = filteredGoals.filter(g => g.status === 'active')
   const achievedGoals = filteredGoals.filter(g => g.status === 'achieved')
+  const otherGoals = filteredGoals.filter(g => g.status === 'paused' || g.status === 'discontinued')
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -134,7 +143,7 @@ export default function GoalsPage() {
               </h2>
               <div className="grid gap-3">
                 {activeGoals.map((goal) => (
-                  <GoalCard key={goal.id} goal={goal} children={children} onUpdate={(updated) => setGoals(prev => prev.map(g => g.id === updated.id ? updated : g))} />
+                  <GoalCard key={goal.id} goal={goal} children={children} onUpdate={handleUpdate} onDelete={handleDelete} />
                 ))}
               </div>
             </div>
@@ -147,7 +156,20 @@ export default function GoalsPage() {
               </h2>
               <div className="grid gap-3">
                 {achievedGoals.map((goal) => (
-                  <GoalCard key={goal.id} goal={goal} children={children} onUpdate={(updated) => setGoals(prev => prev.map(g => g.id === updated.id ? updated : g))} />
+                  <GoalCard key={goal.id} goal={goal} children={children} onUpdate={handleUpdate} onDelete={handleDelete} />
+                ))}
+              </div>
+            </div>
+          )}
+          {otherGoals.length > 0 && (
+            <div>
+              <h2 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <PauseCircle className="w-4 h-4 text-yellow-500" />
+                Paused / Discontinued ({otherGoals.length})
+              </h2>
+              <div className="grid gap-3">
+                {otherGoals.map((goal) => (
+                  <GoalCard key={goal.id} goal={goal} children={children} onUpdate={handleUpdate} onDelete={handleDelete} />
                 ))}
               </div>
             </div>
@@ -158,14 +180,192 @@ export default function GoalsPage() {
   )
 }
 
-function GoalCard({ goal, children, onUpdate }: { goal: Goal; children: Child[]; onUpdate: (g: Goal) => void }) {
+function GoalCard({ goal, children, onUpdate, onDelete }: {
+  goal: Goal
+  children: Child[]
+  onUpdate: (g: Goal) => void
+  onDelete: (id: string) => void
+}) {
   const child = children.find(c => c.id === goal.child_id)
   const domainColors = DOMAIN_COLORS[goal.domain] || 'text-gray-600 bg-gray-50 border-gray-200'
 
+  const [editing, setEditing] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [form, setForm] = useState<{
+    title: string
+    description: string
+    domain: string
+    baseline: string
+    target: string
+    timeline_weeks: number | ''
+    measurement_criteria: string
+    status: Goal['status']
+  }>({
+    title: goal.title,
+    description: goal.description || '',
+    domain: goal.domain,
+    baseline: goal.baseline || '',
+    target: goal.target || '',
+    timeline_weeks: goal.timeline_weeks ?? '',
+    measurement_criteria: goal.measurement_criteria || '',
+    status: goal.status,
+  })
+
   async function updateProgress(value: number) {
     const supabase = createClient()
-    const { data } = await supabase.from('goals').update({ progress_percentage: value, status: value >= 100 ? 'achieved' : 'active' }).eq('id', goal.id).select().single()
+    const { data } = await supabase
+      .from('goals')
+      .update({ progress_percentage: value, status: value >= 100 ? 'achieved' : 'active' })
+      .eq('id', goal.id)
+      .select()
+      .single()
     if (data) onUpdate(data)
+  }
+
+  async function saveEdit() {
+    setSaving(true)
+    try {
+      const supabase = createClient()
+      const { data } = await supabase
+        .from('goals')
+        .update({
+          title: form.title.trim(),
+          description: form.description.trim(),
+          domain: form.domain,
+          baseline: form.baseline.trim(),
+          target: form.target.trim(),
+          timeline_weeks: form.timeline_weeks === '' ? null : Number(form.timeline_weeks),
+          measurement_criteria: form.measurement_criteria.trim(),
+          status: form.status,
+        })
+        .eq('id', goal.id)
+        .select()
+        .single()
+      if (data) { onUpdate(data); setEditing(false) }
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function deleteGoal() {
+    if (!confirm('Delete this goal? This cannot be undone.')) return
+    setDeleting(true)
+    try {
+      const supabase = createClient()
+      await supabase.from('goals').delete().eq('id', goal.id)
+      onDelete(goal.id)
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+  if (editing) {
+    return (
+      <div className="bg-white rounded-2xl border border-blue-200 p-5 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-gray-900 text-sm">Edit Goal</h3>
+          <button onClick={() => setEditing(false)} className="text-gray-400 hover:text-gray-600">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="space-y-3">
+          <div>
+            <label className="text-xs font-medium text-gray-500 mb-1 block">Title</label>
+            <input
+              value={form.title}
+              onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-medium text-gray-500 mb-1 block">Description</label>
+            <textarea
+              value={form.description}
+              onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+              rows={2}
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs font-medium text-gray-500 mb-1 block">Domain</label>
+              <select
+                value={form.domain}
+                onChange={e => setForm(f => ({ ...f, domain: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {THERAPY_DOMAINS.map(d => <option key={d.value} value={d.value}>{d.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-gray-500 mb-1 block">Status</label>
+              <select
+                value={form.status}
+                onChange={e => setForm(f => ({ ...f, status: e.target.value as Goal['status'] }))}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="active">Active</option>
+                <option value="achieved">Achieved</option>
+                <option value="paused">Paused</option>
+                <option value="discontinued">Discontinued</option>
+              </select>
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            <div>
+              <label className="text-xs font-medium text-gray-500 mb-1 block">Baseline</label>
+              <input
+                value={form.baseline}
+                onChange={e => setForm(f => ({ ...f, baseline: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium text-gray-500 mb-1 block">Target</label>
+              <input
+                value={form.target}
+                onChange={e => setForm(f => ({ ...f, target: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium text-gray-500 mb-1 block">Timeline (weeks)</label>
+              <input
+                type="number"
+                value={form.timeline_weeks}
+                onChange={e => setForm(f => ({ ...f, timeline_weeks: e.target.value === '' ? '' : Number(e.target.value) }))}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-gray-500 mb-1 block">How to measure</label>
+            <input
+              value={form.measurement_criteria}
+              onChange={e => setForm(f => ({ ...f, measurement_criteria: e.target.value }))}
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end gap-2 mt-4">
+          <button
+            onClick={() => setEditing(false)}
+            className="text-sm px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={saveEdit}
+            disabled={saving || !form.title.trim()}
+            className="flex items-center gap-2 text-sm px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+          >
+            {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+            Save
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -184,8 +384,25 @@ function GoalCard({ goal, children, onUpdate }: { goal: Goal; children: Child[];
           <h3 className="font-semibold text-gray-900">{goal.title}</h3>
           {goal.description && <p className="text-sm text-gray-500 mt-1">{goal.description}</p>}
         </div>
-        {goal.status === 'achieved' && <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />}
-        {goal.status === 'paused' && <PauseCircle className="w-5 h-5 text-yellow-500 shrink-0" />}
+        <div className="flex items-center gap-1 shrink-0">
+          {goal.status === 'achieved' && <CheckCircle className="w-5 h-5 text-green-500" />}
+          {goal.status === 'paused' && <PauseCircle className="w-5 h-5 text-yellow-500" />}
+          <button
+            onClick={() => setEditing(true)}
+            className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            title="Edit goal"
+          >
+            <Pencil className="w-4 h-4" />
+          </button>
+          <button
+            onClick={deleteGoal}
+            disabled={deleting}
+            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            title="Delete goal"
+          >
+            {deleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+          </button>
+        </div>
       </div>
 
       {goal.baseline && (

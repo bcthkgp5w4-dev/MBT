@@ -192,7 +192,16 @@ function GoalCard({ goal, children, onUpdate, onDelete }: {
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    title: string
+    description: string
+    domain: string
+    baseline: string
+    target: string
+    timeline_weeks: number | ''
+    measurement_criteria: string
+    status: Goal['status']
+  }>({
     title: goal.title,
     description: goal.description || '',
     domain: goal.domain,
@@ -325,7 +334,7 @@ function GoalCard({ goal, children, onUpdate, onDelete }: {
               <input
                 type="number"
                 value={form.timeline_weeks}
-                onChange={e => setForm(f => ({ ...f, timeline_weeks: e.target.value }))}
+                onChange={e => setForm(f => ({ ...f, timeline_weeks: e.target.value === '' ? '' : Number(e.target.value) }))}
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>

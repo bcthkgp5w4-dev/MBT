@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
-import { Plus, BookOpen, Loader2, Sparkles, Mic, MicOff, Video, VideoOff, Upload, X, Play } from 'lucide-react'
+import { Plus, BookOpen, Loader2, Sparkles, Mic, MicOff, Video, VideoOff, Upload, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { formatDate, cn } from '@/lib/utils'
 import type { JournalEntry } from '@/types'
@@ -13,10 +12,6 @@ const MOOD_CONFIG = {
   neutral: { emoji: '😐', label: 'Neutral', color: 'bg-gray-50 text-gray-700' },
   difficult: { emoji: '😔', label: 'Difficult', color: 'bg-orange-50 text-orange-700' },
   crisis: { emoji: '🆘', label: 'Crisis', color: 'bg-red-50 text-red-700' },
-}
-
-function isAudio(url: string) {
-  return /\.(mp3|wav|ogg|m4a|webm)(\?|$)/i.test(url) || url.includes('audio')
 }
 
 function isVideo(url: string) {
